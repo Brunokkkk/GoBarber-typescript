@@ -1,6 +1,8 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/ban-types */
+import React, { useCallback } from 'react';
 import { FiArrowLeft, FiMail, FiLock, FiUser } from 'react-icons/fi';
 import { Form } from '@unform/web';
+import * as Yup from 'yup';
 
 import logoImg from '../../assets/logo.svg';
 import Input from '../../components/input';
@@ -8,9 +10,23 @@ import Button from '../../components/button';
 import { Container, Content, Background } from './styles';
 
 const SingUp: React.FC = () => {
-  function formSubmit(data: object): void {
-    console.log(data);
-  }
+  const formSubmit = useCallback(async (data: object) => {
+    try {
+      const schema = Yup.object().shape({
+        name: Yup.string().required('Nome obrigatório'),
+        email: Yup.string()
+          .required('E-mail obrigatório')
+          .email('Digite um e-mail válido'),
+        password: Yup.string().min(6, 'No mínimo 6 digitos'),
+      });
+
+      await schema.validate(schema, {
+        abortEarly: false,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   return (
     <Container>

@@ -1,17 +1,21 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { FiArrowLeft, FiMail, FiLock, FiUser } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
-
+import { FormHandles } from '@unform/core';
 import logoImg from '../../assets/logo.svg';
 import Input from '../../components/input';
 import Button from '../../components/button';
 import { Container, Content, Background } from './styles';
+import getValidationErrors from '../../utils/getValidationErrors';
 
 const SingUp: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+
   const formSubmit = useCallback(async (data: object) => {
     try {
+      formRef.current?.setErrors({});
       const schema = Yup.object().shape({
         name: Yup.string().required('Nome obrigatório'),
         email: Yup.string()
@@ -24,7 +28,9 @@ const SingUp: React.FC = () => {
         abortEarly: false,
       });
     } catch (err) {
-      console.log(err);
+      const errors = getValidationErrors(err);
+
+      formRef.current?.setErrors(errors);
     }
   }, []);
 
@@ -33,7 +39,7 @@ const SingUp: React.FC = () => {
       <Background />
       <Content>
         <img src={logoImg} alt="GoBarbe" />
-        <Form onSubmit={formSubmit}>
+        <Form ref={formRef} onSubmit={formSubmit}>
           <h1>Faça seu cadastro</h1>
 
           <Input name="nome" icon={FiUser} placeholder="Nome" />

@@ -1,10 +1,11 @@
-import React, { useCallback, useRef, useContext } from 'react';
+/* eslint-disable @typescript-eslint/ban-types */
+import React, { useCallback, useRef } from 'react';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 
 import * as Yup from 'yup';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import AuthContext from '../../context/AuthContext';
+import { useAuth } from '../../hooks/AuthContext';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 import logoImg from '../../assets/logo.svg';
@@ -12,12 +13,17 @@ import Input from '../../components/input';
 import Button from '../../components/button';
 import { Container, Content, Background } from './styles';
 
+interface SignInFormData {
+  email: string;
+  password: string;
+}
+
 const SingIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { name } = useContext(AuthContext);
+  const { signIn } = useAuth();
 
-  const formSubmit = useCallback(async (data: object) => {
+  const formSubmit = useCallback(async (data: SignInFormData) => {
     try {
       formRef.current?.setErrors({});
       const schema = Yup.object().shape({
@@ -29,6 +35,11 @@ const SingIn: React.FC = () => {
 
       await schema.validate(schema, {
         abortEarly: false,
+      });
+
+      signIn({
+        email: data.email,
+        password: data.password,
       });
     } catch (err) {
       const errors = getValidationErrors(err);

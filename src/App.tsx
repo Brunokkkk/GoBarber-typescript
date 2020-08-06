@@ -4,13 +4,14 @@ import GlobalStyle from './styles/global';
 import SingIn from './pages/SignIn';
 // import SingUp from './pages/SignUp';
 
-import { AuthProvider } from './context/AuthContext';
+import GlobalProvider from './hooks';
 
 const App: React.FC = () => (
   <>
-    <AuthProvider>
+    <GlobalProvider>
       <SingIn />
-    </AuthProvider>
+    </GlobalProvider>
+
     <GlobalStyle />
   </>
 );

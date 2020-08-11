@@ -4,10 +4,12 @@ import { FiArrowLeft, FiMail, FiLock, FiUser } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
+import { Link } from 'react-router-dom';
+
 import logoImg from '../../assets/logo.svg';
 import Input from '../../components/input';
 import Button from '../../components/button';
-import { Container, Content, Background } from './styles';
+import { Container, Content, Background, AnimationContainer } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 const SingUp: React.FC = () => {
@@ -38,27 +40,29 @@ const SingUp: React.FC = () => {
     <Container>
       <Background />
       <Content>
-        <img src={logoImg} alt="GoBarbe" />
-        <Form ref={formRef} onSubmit={formSubmit}>
-          <h1>Faça seu cadastro</h1>
+        <AnimationContainer>
+          <img src={logoImg} alt="GoBarbe" />
+          <Form ref={formRef} onSubmit={formSubmit}>
+            <h1>Faça seu cadastro</h1>
 
-          <Input name="nome" icon={FiUser} placeholder="Nome" />
-          <Input name="email" icon={FiMail} placeholder="E-mail" />
+            <Input name="name" icon={FiUser} placeholder="Nome" />
+            <Input name="email" icon={FiMail} placeholder="E-mail" />
 
-          <Input
-            name="password"
-            icon={FiLock}
-            type="password"
-            placeholder="Senha"
-          />
+            <Input
+              name="password"
+              icon={FiLock}
+              type="password"
+              placeholder="Senha"
+            />
 
-          <Button type="submit"> Cadastrar </Button>
-        </Form>
+            <Button type="submit"> Cadastrar </Button>
+          </Form>
 
-        <a href="forgot">
-          <FiArrowLeft />
-          Voltar
-        </a>
+          <Link to="/">
+            <FiArrowLeft />
+            Voltar
+          </Link>
+        </AnimationContainer>
       </Content>
     </Container>
   );

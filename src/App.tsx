@@ -1,18 +1,19 @@
 import React from 'react';
 
+import { BrowserRouter } from 'react-router-dom';
 import GlobalStyle from './styles/global';
-import SingIn from './pages/SignIn';
-// import SingUp from './pages/SignUp';
+
+import Routes from './routes';
 
 import GlobalProvider from './hooks';
 
 const App: React.FC = () => (
-  <>
+  <BrowserRouter>
     <GlobalProvider>
-      <SingIn />
+      <Routes />
     </GlobalProvider>
 
     <GlobalStyle />
-  </>
+  </BrowserRouter>
 );
 export default App;
